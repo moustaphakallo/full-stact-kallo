@@ -1,11 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
-const isLocalhost =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1";
-const endpoint =
-  isLocalhost && API_URL
-    ? `${API_URL}/api/products`
-    : null;
+const endpoint = API_URL
+  ? `${API_URL.replace(/\/$/, "")}/api/products`
+  : "/api/products";
 
 const localProducts = [
   { id: 1, name: "Apple iPhone 17", price: 720000, stock: 15, image: "products/01-iphone17.png" },
@@ -27,10 +23,6 @@ const localProducts = [
 ];
 
 export async function getProducts() {
-  if (!endpoint) {
-    return localProducts;
-  }
-
   const res = await fetch(endpoint);
 
   if (!res.ok) {
